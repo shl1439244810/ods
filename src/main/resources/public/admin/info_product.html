@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="/assets/admin/layui/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="/assets/admin/css/admin.css"/>
+    <script src="/assets/js/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+<div class="page-content-wrap" id="studentSearch">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="text" id="text_product_name" placeholder="请输入商品标题" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-inline">
+            选择商品类别：<select style="height:35px;line-height:38px;" name="name_product_type" id="text_product_type" lay-verify="txt_type" lay-search="">
+            <option value="" style="display:none;"></option>
+            <option value="时尚服装">时尚服装</option>
+            <option value="美食">美食</option>
+            <option value="娱乐">娱乐</option>
+            <option value="宝妈">宝妈</option>
+            <option value="程序">程序</option>
+            <option value="退休礼物">退休礼物</option>
+            <option value="影视">影视</option>
+            <option value="健身">健身</option>
+        </select>
+        </div>
+        <button class="layui-btn layui-btn-normal site-demo-active" data-type="search" id="searchStudent">搜索
+        </button>
+        <table width="450px" class="layui-table" lay-data="{ url:'/product_info/getAllProductInfo', page:true, id:'idTest',width:1210}" lay-filter="demo">
+            <thead>
+            <tr>
+                <th lay-data="{field:'product_id', width:200}">商品编号</th>
+                <th lay-data="{field:'product_name', width:800}">商品标题</th>
+                <th lay-data="{field:'product_price', width:100}">价格</th>
+                <th lay-data="{field:'product_type', width:100}">商品类别</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <script type="text/html" id="barDemo">
+	</script>
+</div>
+<script src="/assets/admin/layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    layui.use('table', function () {
+        var $ = layui.jquery
+        var table = layui.table;
+        table.on('checkbox(demo)', function (obj) {
+            console.log(obj)
+        });
+        var active = {
+            search: function () {
+                var product_name = $("#text_product_name").val();
+                var product_type = $("#text_product_type").val();
+                table.reload('idTest', {
+                    method: 'POST'
+                    , where: {"product_name": product_name, "product_type": product_type}, page: {curr: 1}
+                })
+            }
+        };
+        $('#studentSearch .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    });
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+    });
+</script>
+</body>
+
+</html>
